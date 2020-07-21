@@ -1,5 +1,5 @@
 import React from 'react';
-import './service/index'
+import './services/index'
 import {
   BrowserRouter as Router,
   Switch,

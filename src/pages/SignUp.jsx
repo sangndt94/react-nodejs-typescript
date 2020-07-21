@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import userService from '../service/UserService'
+import userService from '../services/UserService'
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -37,11 +37,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
     const { register, handleSubmit, watch, errors } = useForm();
     const classes = useStyles();
-    const onSubmit = data => {
-        // axios.post("api/users/add", data).then((response) => console.log(response))
-        const a = userService.SignUp(data)
-        console.log(a);
-        
+    const onSubmit = async data => {
+        return userService.SignUp(data)
     };
 
     return (
