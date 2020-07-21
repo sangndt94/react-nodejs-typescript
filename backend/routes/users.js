@@ -24,7 +24,6 @@ router.route('/add').post((req, res) => {
     }
 
     User.findOne({ email }).exec((err, user) => {
-        console.log(user);
         if (user) {
             return res.status(400).json({ error: "User with this email already exists" })
         }
@@ -39,11 +38,11 @@ router.route('/add').post((req, res) => {
                 to: email,
                 from: 'hao.pham@kms-solutions.asia',
                 subject: "Signup Success",
-                html: '<h1>You successfully signed up ! </h1>',
-                // html: `
-                //  <h2>Please click on given link to activate your account</h2>
-                // <p>${process.env.CLIENT_URL}/authentication/activate/${token}</p>
-                // `
+                // html: '<h1>You successfully signed up ! </h1>',
+                html: `
+                 <h2>Please click on given link to activate your account</h2>
+                 <a href="${process.env.CLIENT_URL}/authentication/activate/${token}">${process.env.CLIENT_URL}/authentication/activate/${token}</a>
+                `
             })
             // return res.json("Signup success")
         })
