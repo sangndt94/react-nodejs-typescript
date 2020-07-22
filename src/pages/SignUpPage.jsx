@@ -5,14 +5,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
+import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useForm } from "react-hook-form";
-import axios from 'axios';
 import userService from '../services/UserService'
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
-    const { register, handleSubmit, watch, errors } = useForm();
+    const { register, handleSubmit } = useForm();
     const classes = useStyles();
     const onSubmit = async data => {
         return userService.SignUp(data)
@@ -121,7 +120,7 @@ export default function SignUp() {
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link to="/sign-in" variant="body2">
                                 Already have an account? Sign in
                             </Link>
                         </Grid>
