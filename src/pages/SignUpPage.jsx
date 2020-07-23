@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignUp() {
+const SignUpPage = () => {
     const { register, handleSubmit } = useForm();
     const classes = useStyles();
     const onSubmit = async data => {
@@ -130,3 +130,4 @@ export default function SignUp() {
         </Container>
     );
 }
+export default SignUpPage

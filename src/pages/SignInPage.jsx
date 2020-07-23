@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignInPage() {
+const SignInPage = () => {
     const { register, handleSubmit } = useForm();
     const classes = useStyles();
     const onSubmit = async data => {
@@ -120,3 +120,5 @@ export default function SignInPage() {
         </Grid>
     );
 }
+
+export default SignInPage
