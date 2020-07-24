@@ -1,5 +1,5 @@
-const userController =  require("./users") ;
+const router = require('express').Router();
 
-module.exports = function (app) {
-    app.use('/api/users',userController)
-}
+router.use('/users', require("../controllers/users.controller"))
+
+module.exports = router

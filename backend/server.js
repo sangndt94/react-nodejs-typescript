@@ -16,7 +16,7 @@ connection.once('open', () => {
     console.log("MongoDB database connection");
 })
 
-require("./routes/index")(app)
+app.use('/api', require("./routes"))
 
 app.listen(port, () => {
     console.log(`Server is running on port :${port}`);
