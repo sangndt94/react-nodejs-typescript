@@ -1,4 +1,4 @@
-const router = require('express').Router({mergeParams: true});
+const router = require('express').Router({ mergeParams: true });
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const User = require('../models/user.model');
@@ -49,15 +49,15 @@ router.route('/sign-up').post((req, res) => {
     })
 });
 
-
 router.route('/sign-in').post((req, res) => {
     const { email, password } = req.body;
     User.findOne({ email, password }).exec((err, user) => {
         if (!user) {
-            return res.status(400).json({ error: err })
+            return res.status(400).json({ error: err, message: "Email or Password incorrect" })
         }
-        const token = jwt.sign({ email, password }, process.env.JWT_ACC_ACTIVATE, { expiresIn: '20m' })
-        return res.json({ user, token })
+        const { email, firstName, lastName, createdAt, updatedAt } = user
+        const token = jwt.sign({ email, firstName, lastName, createdAt, updatedAt }, process.env.JWT_ACC_ACTIVATE, { expiresIn: '16h' })
+        return res.json({ token })
     })
     // const { token } = req.body;
     // if (token) {
@@ -84,4 +84,19 @@ router.route('/sign-in').post((req, res) => {
     // return res.json({ error: "Something went wrong !!!" })
 })
 
+// send token get account
+router.route('/my-account').get((req, res) => {
+    const { authorization } = req.headers;
+    if (authorization) {
+        jwt.verify(authorization.replace('bearer ', "").toString(), process.env.JWT_ACC_ACTIVATE, (err, decodedToken) => {
+            if (err) {
+                return res.status(400).json({ error: "Incorrect or Expired link." })
+            }
+            return res.json(decodedToken)
+        })
+    } else {
+        return res.json({ error: "Something went wrong !!!" })
+    }
+
+})
 module.exports = router

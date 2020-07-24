@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import userService from '../services/UserService'
 import { useForm } from 'react-hook-form';
+import { setCookie, userCookie, cookieExpirationInDays } from '../utils/cookie'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,10 +48,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignInPage = () => {
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, reset } = useForm();
     const classes = useStyles();
-    const onSubmit = async data => {
-        return userService.SignIn(data)
+    const onSubmit = async dataForm => {
+        const data = await userService.SignIn(dataForm);
+        if (data?.token) {
+            setCookie(userCookie, data.token, cookieExpirationInDays)
+            reset()
+        }
     };
     return (
         <Grid container component="main" className={classes.root}>
@@ -104,7 +109,7 @@ const SignInPage = () => {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
+                                <Link to="#" variant="body2">
                                     Forgot password?
                                 </Link>
                             </Grid>
