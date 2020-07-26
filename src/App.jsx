@@ -2,16 +2,12 @@ import React, { useEffect } from 'react';
 import './services/index'
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect
 } from "react-router-dom";
-import SignUpPage from './pages/SignUpPage';
-import HomePage from './pages/HomePage';
-import SignInPage from './pages/SignInPage';
 import CreateContext from './context/CreateContext';
 import { getCookie } from './utils/cookie';
 import UserService from './services/UserService';
+import UserRoutes from './routes/User.routes';
+import AuthRoutes from './routes/Auth.routes';
 
 const { StateProvider, State } = CreateContext()
 
@@ -24,14 +20,14 @@ const App = () => {
       setState({ ...state, user })
     })()
   }, [])
+
   return (
     <Router>
-      <Switch>
-        <Route path="/sign-up" exact component={SignUpPage} />
-        <Route path="/sign-in" exact component={SignInPage} />
-        {!state.user && <Redirect to="/sign-in" />}
-        <Route path="/" exact component={HomePage} />
-      </Switch>
+      {state.user ? (
+        <UserRoutes />
+      ) : (
+          <AuthRoutes />
+        )}
     </Router>
   );
 }
