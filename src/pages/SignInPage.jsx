@@ -6,7 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -50,11 +50,14 @@ const useStyles = makeStyles((theme) => ({
 const SignInPage = () => {
     const { register, handleSubmit, reset } = useForm();
     const classes = useStyles();
+    const history = useHistory()
     const onSubmit = async dataForm => {
         const data = await userService.SignIn(dataForm);
         if (data?.token) {
             setCookie(userCookie, data.token, cookieExpirationInDays)
             reset()
+            history.push('/')
+            window.location.reload();
         }
     };
     return (
