@@ -18,6 +18,7 @@
     "mailgun-js": "^0.22.0",
     "mongoose": "^5.9.24",
     "nodemailer": "^6.4.10",
-    "nodemailer-sendgrid-transport": "^0.2.0"
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "nodemon": "^2.0.4"
   }
 }
