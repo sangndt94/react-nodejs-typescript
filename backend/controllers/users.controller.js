@@ -4,11 +4,29 @@ const sendgridTransport = require('nodemailer-sendgrid-transport');
 const User = require('../models/user.model');
 const jwt = require("jsonwebtoken")
 
-const tranporter = nodemailer.createTransport(sendgridTransport({
-    auth: {
-        api_key: process.env.SENDGRID_KEY
+//send with sendgrid
+// const tranporter = nodemailer.createTransport(sendgridTransport({
+//     auth: {
+//         api_key: process.env.SENDGRID_KEY
+//     }
+// }))
+
+// send width gmail
+//https://myaccount.google.com/lesssecureapps  => disable , cap quyen truy cap
+const tranporter = nodemailer.createTransport({
+    service : "gmail",
+    auth : {
+        user : process.env.EMAIL_GMAIL,
+        pass : process.env.PASSWORD_GMAIL
     }
-}))
+})
+const mailOptions = {
+    from : "hao.pham@kms-solutions.asia",
+    to : "sangndt94@gmail.com",
+    cc: "",
+    subject: "testing send email",
+    text : "IT work"
+}
 
 router.route('/').get((req, res) => {
     User.find()
@@ -33,8 +51,28 @@ router.route('/sign-up').post((req, res) => {
             if (err) {
                 return res.status(400).json({ error: err })
             }
-            // const token = jwt.sign({ firstName, lastName, email, password }, process.env.JWT_ACC_ACTIVATE, { expiresIn: '20m' })
+            const token = jwt.sign({ firstName, lastName, email, password }, process.env.JWT_ACC_ACTIVATE, { expiresIn: '20m' })
+            //send with sendgrid
+            tranporter.sendMail({
+                from : "sangndt94@gmail.com",
+                to : "sangndt94@gmail.com",
+                cc: "",
+                subject: "testing send email",
+                html: `
+                  <h2>Please click on given link to activate your account</h2>
+                  <a href="${process.env.CLIENT_URL}/authentication/activate/${token}">${process.env.CLIENT_URL}/authentication/activate/${token}</a>
+                 `
+            },function(err , data){
+                if(err){
+                    console.log("error Occurs :", err)
+                } else {
+                    console.log("Email sent!!!!")
+                }
+            })
             return res.json({ data })
+        })
+            //send with sengrid
+            // const token = jwt.sign({ firstName, lastName, email, password }, process.env.JWT_ACC_ACTIVATE, { expiresIn: '20m' })
             // return tranporter.sendMail({
             //     to: email,
             //     from: 'hao.pham@kms-solutions.asia',
@@ -45,7 +83,6 @@ router.route('/sign-up').post((req, res) => {
             //      <a href="${process.env.CLIENT_URL}/authentication/activate/${token}">${process.env.CLIENT_URL}/authentication/activate/${token}</a>
             //     `
             // })
-        })
     })
 });
 
