@@ -36,8 +36,9 @@ const useStyles = makeStyles((theme) => ({
 const SignUpPage = () => {
     const { register, handleSubmit } = useForm();
     const classes = useStyles();
-    const onSubmit = async data => {
-        return userService.SignUp(data)
+    const onSubmit = async obj => {
+        const { data } = await userService.SignUp(obj)
+        return data
     };
 
     return (

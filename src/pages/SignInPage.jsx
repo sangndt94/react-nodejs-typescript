@@ -14,7 +14,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import userService from '../services/UserService'
 import { useForm } from 'react-hook-form';
-import { setCookie, userCookie, cookieExpirationInDays } from '../utils/cookie'
+import { setCookie } from '../utils/cookie'
+import CreateContext from '../context/CreateContext';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,17 +48,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const { State } = CreateContext()
+
 const SignInPage = () => {
     const { register, handleSubmit, reset } = useForm();
+    const { state, setState } = State();
     const classes = useStyles();
     const history = useHistory()
     const onSubmit = async dataForm => {
         const data = await userService.SignIn(dataForm);
         if (data?.token) {
-            setCookie(userCookie, data.token, cookieExpirationInDays)
+            setCookie(data.token)
             reset()
+            await setState({ ...state, isLogin: true })
             history.push('/')
-            window.location.reload();
         }
     };
     return (

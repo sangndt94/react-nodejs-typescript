@@ -4,7 +4,7 @@ const StateContext = createContext({ state: "", setState: () => { } });
 
 const CreateContext = () => {
     const StateProvider = ({ children }) => {
-        const [state, setState] = useState({ state: "", setState: () => { } });
+        const [state, setState] = useState({ setState: () => { } });
         return (
             <StateContext.Provider value={{ state, setState }} >
                 {children}

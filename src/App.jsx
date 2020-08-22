@@ -7,7 +7,6 @@ import CreateContext from './context/CreateContext';
 import { getCookie } from './utils/cookie';
 import UserService from './services/UserService';
 import UserRoutes from './routes/User.routes';
-import AuthRoutes from './routes/Auth.routes';
 
 const { StateProvider, State } = CreateContext()
 
@@ -17,17 +16,13 @@ const App = () => {
   useEffect(() => {
     (async () => {
       const user = await UserService.MyAccount({ token })
-      setState({ ...state, user })
+      setState({ ...state, user , isLogin : true })
     })()
-  }, [])
-
+  }, [state.isLogin])
+  
   return (
     <Router>
-      {state.user ? (
-        <UserRoutes />
-      ) : (
-          <AuthRoutes />
-        )}
+      <UserRoutes />
     </Router>
   );
 }
