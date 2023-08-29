@@ -10,11 +10,11 @@ app.use(cors());
 app.use(express.json());
 
 const uri = process.env.ATLAS_URI;
-moongose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
-const connection = moongose.connection;
-connection.once('open', () => {
-    console.log("MongoDB database connection");
-})
+// moongose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
+// const connection = moongose.connection;
+// connection.once('open', () => {
+//     console.log("MongoDB database connection");
+// })
 
 app.use('/api', require("./routes"))
 
